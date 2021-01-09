@@ -54,7 +54,7 @@ You must act quickly if you wish to survive!
 inventory = []
 
 # a dictionary linking a room to other rooms
-## A dictionary linking a room to other rooms
+# A dictionary linking a room to other rooms
 rooms = {
 
     'Main Hall': {
