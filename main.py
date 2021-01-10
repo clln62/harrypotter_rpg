@@ -130,6 +130,7 @@ rooms = {
     },
     'Headmaster\'s Office': {
         # Continue building
+        'north': 'Moving Staircases'
     },
     'Slytherin CR': {
         'upstairs': 'House Hallway',
@@ -270,8 +271,28 @@ while True:
 
     # if they type 'go' first
     if move[0] == 'go':
+        # If player attempts to enter Headmaster's Office from stairs, they need the password
+        if currentRoom == 'Moving Staircases' and rooms[currentRoom][move[1]] == 'Headmaster\'s Office':
+            print("""
+What's the password?
+Enter "A" for Quidditch
+"B" for Sherbet Lemon
+"C" for Hocus Pocus
+"D" for Gillyweed
+            """)
+
+            answer = input(">").strip().upper()
+
+            if answer == "B":
+                # Only add key if this is the first entry and player does not already hold key
+                if 'key' not in inventory and 'item' not in rooms['Headmaster\'s Office']:
+                    rooms['Headmaster\'s Office']['item'] = 'key'
+                currentRoom = rooms[currentRoom][move[1]]
+            else:
+                print("\nThat is incorrect.")
+
         # Check if player is attempting to enter dorm room - if so, prompt with riddle
-        if len(currentRoom.split(" ")) > 1 and currentRoom.split(" ")[1] == "CR" and rooms[currentRoom][move[1]].split(" ")[1] == "Dorm":
+        elif len(currentRoom.split(" ")) > 1 and currentRoom.split(" ")[1] == "CR" and rooms[currentRoom][move[1]].split(" ")[1] == "Dorm":
             # For now, for simplicity, every room will have the same riddle, but in future can have random
             # riddles or specific ones to each house
             print("""
