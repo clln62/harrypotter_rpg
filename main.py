@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# Replace RPG starter project with this code when new instructions are live
+
 
 def showInstructions():
     # print a main menu and the commands
@@ -17,6 +17,8 @@ def showStatus():
     # print the player's current status
     print('---------------------------')
     print('You are in the ' + currentRoom)
+    # print current health
+    print('Health : ' + str(health))
     # print the current inventory
     print('Inventory : ' + str(inventory))
     # print an item if there is one
@@ -35,7 +37,102 @@ The magnificent dragon flaps its wings and blows fire in your direction.
 You narrowly jump out of the way of the burning flames.
 You must act quickly if you wish to survive!
             """)
-        if monster == 'basilisk':
+            if 'wand' in inventory and 'sword' in inventory:
+                print("""
+With your wand at the ready, you must come up with a spell to distract the dragon!
+Enter "A" for Aqua Eructo to shoot a stream of water at the dragon.
+"B" for Langlock to stick the dragon's tongue to the tip of its mouth.
+"C" fo Flipendo to knock the dragon backwards
+                """)
+                print('---------------------------')
+                answer = input('>').strip().upper()
+
+                # If they select the correct spell, they are taken on a winning path against the dragon
+                if answer == "A":
+                    print("""
+Like a firehose, water bursts from the tip of your wand, forcing the dragon towards the corner of the room.
+You know that charms and jinx won't penetrate the dragon's thick skin, so you must be clever.
+                    """)
+                    if 'broom' in inventory:
+                        print("""
+You swiftly use the Accio summoning charm to call your broom, mounting it.
+Flying around the dragon, you confuse it with your speed, giving you time to brandish your sword.
+You fly below the belly of the dragon, thrusting your sword into the stomach of the creature.
+Just as you clear the dragon above you, it stumbles to the ground, its body shaking the ground and walls.
+Beyond the tail of the dragon, you can now see the exit. 
+                        """)
+                        del rooms[currentRoom]['monster']
+                        monsters.remove('dragon')
+                        rooms[currentRoom]['narrow-path'] = 'Charms Class'
+                    else:
+                        print("""
+Three spells come to your mind:
+Enter "A" for Defodio to dig and carve through the dragon.
+"B" for Moblicorpus to levitate and move the dragon.
+"C" for Wingardium Leviosa to levitate a large rock onto the dragon.
+                        """)
+
+                        print('---------------------------')
+                        answer = input('>').strip().upper()
+
+                        # winning spell
+                        if answer == 'C':
+                            print("""
+You cast Wingardium Leviosa to the largest rock you can see, causing the rock smash into the dragon.
+The dragon falls to the ground, shaking its head from the blunt of the rock.
+With spared time, you brandish your sword, jabbing it into the side of the dragon.
+It swats you away, causing you to take on 25 points of damage when you hit a wall.
+Luckily for you, the sword was enough to cause the dragon to bleed out, giving you access to an exit.
+                            """)
+                            del rooms[currentRoom]['monster']
+                            monsters.remove('dragon')
+                            rooms[currentRoom]['narrow-path'] = 'Charms Class'
+                            # health -= 25
+                        # Other spells fail and the player loses
+                        else:
+                            print("""
+When it is too late, you remember that your spell cannot penetrate the skin of the dragon.
+The dragon breathes fire onto your hand, knocking your wand away.
+You reach for your sword, but the dragon is too quick, moving its flames to your other hand.
+You become overwhelmed in the fire with no other options.
+\nGAME OVER
+                            """)
+                            return
+                # Any other spell will fail, causing more effort to win against the dragon
+                # This scenario is not yet completed
+                else:
+                    print("""
+You cast a spell at the dragon, but it cannot penetrate the dragon's skin and fails to work.
+Aggravated, the dragon swings its tail and knocks you to the ground. Your wand flies through the air.
+********************************************************************************************************
+                    """)
+            # without a sword, the wizard has no means to win
+            elif 'wand' in inventory:
+                print("""
+You raise your want, but as you are about to cast your first spell, the dragon knocks you to the ground.
+Your wand snaps as you fall to the hard ground.
+The dragon takes a deep breath, letting out one last burst of flames.
+\nGAME OVER
+                """)
+                return
+            # without a wand, the wizard cannot get close enough to the dragon to use the sword
+            elif 'sword' in inventory:
+                print("""
+You jump to action, brandishing your sword. 
+The dragon flaps its wings in intimidation, shaking the ground beneath you as it lands.
+You take a swing at the dragons stomach, but you are too close and too slow.
+The dragon opens its mouth, swiftly wrapping it around your head.
+\nGAME OVER
+                """)
+                return
+            # would you fight a dragon with nothing but your hands?
+            else:
+                print("""
+With no defenses, you trimmer in fear, only to be engulfed by the flames of the dragon.
+\nGAME OVER
+                """)
+                return
+        elif monster == 'basilisk':
             print("""
 The gigantic basilisk, slithers across the room and opens its mouth with a hiss.
 You slide under a desk, barely avoiding the deadly bite of the serpent.
@@ -52,6 +149,12 @@ You must act quickly if you wish to survive!
 
 # an inventory, which is initially empty
 inventory = []
+
+# player health set to 100 at start
+health = 100
+
+# all monsters must be defeated to win. This is a tracker of the live monsters, once the list is empty, the player wins.
+monsters = ['dragon', 'basilisk']
 
 # a dictionary linking a room to other rooms
 # A dictionary linking a room to other rooms
@@ -97,7 +200,6 @@ rooms = {
         'hidden-door': 'Dragon Basement'
     },
     'Dragon Basement': {
-        # Determine what to do in this room, user current gets trapped
         'monster': 'dragon'
     },
     'Charms Class 2': {
@@ -183,9 +285,8 @@ rooms = {
         'west': 'Main Hall Balcony'
     },
     'Restricted Section': {
-        # Key will be needed from Headmaster's Office in order to enter
-        # Add a cool item that will be very useful later
-        'east': 'Library'
+        'east': 'Library',
+        'item': 'sword'
     },
     'Fountain Courtyard': {
         'north': 'Outer Corridor',
@@ -200,9 +301,10 @@ rooms = {
     },
     'Wooden Bridge': {
         'north': 'Fountain Courtyard',
-        'South': 'Hogwarts Grounds'
+        'south': 'Hogwarts Grounds'
     },
     'Hogwarts Grounds': {
+        'north': 'Wooden Bridge',
         'south': 'Black Lake',
         'southwest': 'Hagrid\'s Garden',
         'west': 'Quidditch Grounds'
@@ -291,6 +393,7 @@ Enter "A" for Quidditch
 "D" for Gillyweed
                 """)
 
+                print('---------------------------')
                 answer = input(">").strip().upper()
 
                 if answer == "B":
@@ -324,6 +427,7 @@ Enter "A" for Albus Dumbledore -
 "D" for Minerva McGonagall
                 ''')
 
+                print('---------------------------')
                 answer = input(">").strip().upper()
 
                 # If answered correctly, they continue to the respective Dorm
