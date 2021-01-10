@@ -271,65 +271,75 @@ while True:
 
     # if they type 'go' first
     if move[0] == 'go':
-        # If player attempts to enter Headmaster's Office from stairs, they need the password
-        if currentRoom == 'Moving Staircases' and rooms[currentRoom][move[1]] == 'Headmaster\'s Office':
-            print("""
+        # check that they are allowed wherever they want to go
+        if move[1] in rooms[currentRoom]:
+            # If player attempts to enter Restricted Section, they must have the key
+            if currentRoom == 'Library' and rooms[currentRoom][move[1]] == 'Restricted Section':
+                if 'key' in inventory:
+                    currentRoom = rooms[currentRoom][move[1]]
+                    inventory.remove('key')
+                    print('You reach for the key as you enter, but the key has vanished.')
+                else:
+                    print('Access to the Restricted Section is reserved to those with permission from the Headmaster.')
+            # If player attempts to enter Headmaster's Office from stairs, they need the password
+            elif currentRoom == 'Moving Staircases' and rooms[currentRoom][move[1]] == 'Headmaster\'s Office':
+                print("""
 What's the password?
 Enter "A" for Quidditch
 "B" for Sherbet Lemon
 "C" for Hocus Pocus
 "D" for Gillyweed
-            """)
+                """)
 
-            answer = input(">").strip().upper()
+                answer = input(">").strip().upper()
 
-            if answer == "B":
-                # Only add key if this is the first entry and player does not already hold key
-                if 'key' not in inventory and 'item' not in rooms['Headmaster\'s Office']:
-                    rooms['Headmaster\'s Office']['item'] = 'key'
-                currentRoom = rooms[currentRoom][move[1]]
-            else:
-                print("\nThat is incorrect.")
+                if answer == "B":
+                    # Only add key if this is the first entry and player does not already hold key
+                    # Player will also have access to key if needed after using it in the restricted section
+                    if 'key' not in inventory and 'item' not in rooms['Headmaster\'s Office']:
+                        rooms['Headmaster\'s Office']['item'] = 'key'
+                    currentRoom = rooms[currentRoom][move[1]]
+                else:
+                    print("\nThat is incorrect.")
 
-        # Check if player is attempting to enter dorm room - if so, prompt with riddle
-        elif len(currentRoom.split(" ")) > 1 and currentRoom.split(" ")[1] == "CR" and rooms[currentRoom][move[1]].split(" ")[1] == "Dorm":
-            # For now, for simplicity, every room will have the same riddle, but in future can have random
-            # riddles or specific ones to each house
-            print("""
+            # Check if player is attempting to enter dorm room - if so, prompt with riddle
+            elif len(currentRoom.split(" ")) > 1 and currentRoom.split(" ")[1] == "CR" and rooms[currentRoom][move[1]].split(" ")[1] == "Dorm":
+                # For now, for simplicity, every room will have the same riddle, but in future can have random
+                # riddles or specific ones to each house
+                print("""
 In order to enter the house dorm, you must first answer this riddle. 
 Answer correctly and you may enter. 
 Answer incorrectly and face the consequences.
-            """)
-            print('''
+                """)
+                print('''
             I'm often very stern,
             I wear my hair up in a bun,
             I'm really very fair,
             I find Quidditch very fun.
             Who am I?
-            
+                
 Enter "A" for Albus Dumbledore - 
 "B" for Harry Potter - 
 "C" for Hermione Granger - 
 "D" for Minerva McGonagall
-            ''')
+                ''')
 
-            answer = input(">").strip().upper()
+                answer = input(">").strip().upper()
 
-            # If answered correctly, they continue to the respective Dorm
-            if answer == "D":
-                currentRoom = rooms[currentRoom][move[1]]
-            # Otherwise they are taken to Headmaster's Office
-            else:
-                print("""
+                # If answered correctly, they continue to the respective Dorm
+                if answer == "D":
+                    currentRoom = rooms[currentRoom][move[1]]
+                # Otherwise they are taken to Headmaster's Office
+                else:
+                    print("""
 You have been caught by Professor Minerva McGonagall for trying to sneak into another houses dorm!
 She takes you directly to the Headmaster's Office!
-                """)
+                    """)
                 currentRoom = "Headmaster\'s Office"
+            else:
+                # set the current room to the new room
+                currentRoom = rooms[currentRoom][move[1]]
 
-        # check that they are allowed wherever they want to go
-        elif move[1] in rooms[currentRoom]:
-            # set the current room to the new room
-            currentRoom = rooms[currentRoom][move[1]]
         # there is no door (link) to the new room
         else:
             print('You can\'t go that way!')
