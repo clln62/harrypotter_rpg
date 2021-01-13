@@ -25,7 +25,8 @@ player = player_class.new_player(inventory)
 def showInstructions():
     # print a main menu and the commands
     print(f'''
-========
+How to play:
+============
 Commands:
   go [direction]
   get [item]
@@ -34,10 +35,12 @@ Commands:
     ''')
 
 def game_kickoff():
-    print(f"Welcome to Hogwarts {player.name}! We are excited to have you!")
+    print(f"\nWelcome to Hogwarts {player.name}! We are excited to have you!")
     # Kick off story to player
     story.print_story()
+    input("Press enter to continue!")
     showInstructions()
+    input("Press enter to begin your quest!")
 
 
 def showStatus():
@@ -167,6 +170,7 @@ She takes you directly to the Headmaster's Office!
 
 # Kick of game, followed by while loop
 # showInstructions()
+game_kickoff()
 
 # loop forever
 while True:
