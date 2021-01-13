@@ -4,6 +4,22 @@ from monsters import dragon, basilisk
 from rooms import hogwarts_rooms
 
 
+# an inventory, which is initially empty
+inventory = []
+
+# player health set to 100 at start
+health = 100
+
+# all monsters must be defeated to win. This is a tracker of the live monsters, once the list is empty, the player wins.
+monsters = ['dragon', 'basilisk']
+
+# Large dictionary with all of the connected rooms imported
+rooms = hogwarts_rooms.rooms
+
+# start the player in the Main Hall
+currentRoom = 'Main Hall'
+
+
 def showInstructions():
     # print a main menu and the commands
     print('''
@@ -12,6 +28,7 @@ Hogwarts RPG Game
 Commands:
   go [direction]
   get [item]
+  q <quit game>
 ''')
 
 
@@ -31,22 +48,7 @@ def showStatus():
         print('\nSomething feels off about this room, almost as if there is a hidden-door...')
         # if room contains a monster
     if "monster" in rooms[currentRoom]:
-        monster = rooms[currentRoom]["monster"]
-        print(f"\nYou have come face to face with a {monster}!")
-        if monster == 'dragon':
-            if dragon.dragon_encountered(inventory):
-                del rooms[currentRoom]['monster']
-                monsters.remove('dragon')
-                rooms[currentRoom]['narrow-path'] = 'Charms Class'
-            else:
-                return
-        elif monster == 'basilisk':
-            if basilisk.basilisk_encountered(inventory):
-                del rooms[currentRoom]['monster']
-                monsters.remove('basilisk')
-                rooms[currentRoom]['west'] = 'Slytherin CR'
-            else:
-                return
+        handle_monster()
     # print all directions and rooms
     print("\nCurrent paths:")
     for path in rooms[currentRoom]:
@@ -56,20 +58,104 @@ def showStatus():
     print("---------------------------")
 
 
-# an inventory, which is initially empty
-inventory = []
+# Kick off monster storyline scenarios
+def handle_monster():
+    monster = rooms[currentRoom]["monster"]
+    print(f"\nYou have come face to face with a {monster}!")
+    if monster == 'dragon':
+        # Will return true or false if monster was defeated. If not, the game was lost
+        if dragon.dragon_encountered(inventory):
+            monster_defeated('dragon')
+            rooms[currentRoom]['narrow-path'] = 'Charms Class'
+        else:
+            return
+    elif monster == 'basilisk':
+        # Will return true or false if monster was defeated. If not, the game was lost
+        if basilisk.basilisk_encountered(inventory):
+            monster_defeated('basilisk')
+            rooms[currentRoom]['west'] = 'Slytherin CR'
+        else:
+            return
 
-# player health set to 100 at start
-health = 100
 
-# all monsters must be defeated to win. This is a tracker of the live monsters, once the list is empty, the player wins.
-monsters = ['dragon', 'basilisk']
+# Monster has been defeated, remove from monsters list and remove from room
+def monster_defeated(remove_monster):
+    del rooms[currentRoom]['monster']
+    monsters.remove(remove_monster)
 
-rooms = hogwarts_rooms.rooms
+# Allow or deny access to Restricted Section
+def restricted_access():
+    global currentRoom
+    if 'key' in inventory:
+        currentRoom = rooms[currentRoom][move[1]]
+        inventory.remove('key')
+        print('You reach for the key as you enter, but the key has vanished.')
+    else:
+        print('Access to the Restricted Section is reserved to those with permission from the Headmaster.')
 
-# start the player in the Hall
-currentRoom = 'Main Hall'
+# Allow or deny access to Headmaster's Office
+def office_access():
+    global currentRoom
+    print("""
+What's the password?
+Enter "A" for Quidditch
+"B" for Sherbet Lemon
+"C" for Hocus Pocus
+"D" for Gillyweed
+    """)
 
+    print('---------------------------')
+    answer = input(">").strip().upper()
+
+    if answer == "B":
+        # Only add key if this is the first entry and player does not already hold key
+        # Player will also have access to key if needed after using it in the restricted section
+        if 'key' not in inventory and 'item' not in rooms['Headmaster\'s Office']:
+            rooms['Headmaster\'s Office']['item'] = 'key'
+        currentRoom = rooms[currentRoom][move[1]]
+    else:
+        print("\nThat is incorrect.")
+
+# Allow or deny access to dorm room
+def dorm_access():
+    global currentRoom
+    # For now, for simplicity, every room will have the same riddle, but in future can have random
+    # riddles or specific ones to each house
+    print("""
+In order to enter the house dorm, you must first answer this riddle. 
+Answer correctly and you may enter. 
+Answer incorrectly and face the consequences.
+    """)
+    print('''
+            I'm often very stern,
+            I wear my hair up in a bun,
+            I'm really very fair,
+            I find Quidditch very fun.
+            Who am I?
+
+Enter "A" for Albus Dumbledore - 
+"B" for Harry Potter - 
+"C" for Hermione Granger - 
+"D" for Minerva McGonagall
+    ''')
+
+    print('---------------------------')
+    answer = input(">").strip().upper()
+
+    # If answered correctly, they continue to the respective Dorm
+    if answer == "D":
+        currentRoom = rooms[currentRoom][move[1]]
+    # Otherwise they are taken to Headmaster's Office
+    else:
+        print("""
+You have been caught by Professor Minerva McGonagall for trying to sneak into another houses dorm!
+She takes you directly to the Headmaster's Office!
+        """)
+    currentRoom = "Headmaster\'s Office"
+
+
+
+# Kick of game, followed by while loop
 showInstructions()
 
 # loop forever
@@ -89,75 +175,23 @@ while True:
     # get golden key is returned ["get", "golden key"]
     move = move.lower().split(" ", 1)
 
+    # Allow player to quit
+    if move[0] == 'q':
+        break
+
     # if they type 'go' first
     if move[0] == 'go':
         # check that they are allowed wherever they want to go
         if move[1] in rooms[currentRoom]:
             # If player attempts to enter Restricted Section, they must have the key
             if currentRoom == 'Library' and rooms[currentRoom][move[1]] == 'Restricted Section':
-                if 'key' in inventory:
-                    currentRoom = rooms[currentRoom][move[1]]
-                    inventory.remove('key')
-                    print('You reach for the key as you enter, but the key has vanished.')
-                else:
-                    print('Access to the Restricted Section is reserved to those with permission from the Headmaster.')
+                restricted_access()
             # If player attempts to enter Headmaster's Office from stairs, they need the password
             elif currentRoom == 'Moving Staircases' and rooms[currentRoom][move[1]] == 'Headmaster\'s Office':
-                print("""
-What's the password?
-Enter "A" for Quidditch
-"B" for Sherbet Lemon
-"C" for Hocus Pocus
-"D" for Gillyweed
-                """)
-
-                print('---------------------------')
-                answer = input(">").strip().upper()
-
-                if answer == "B":
-                    # Only add key if this is the first entry and player does not already hold key
-                    # Player will also have access to key if needed after using it in the restricted section
-                    if 'key' not in inventory and 'item' not in rooms['Headmaster\'s Office']:
-                        rooms['Headmaster\'s Office']['item'] = 'key'
-                    currentRoom = rooms[currentRoom][move[1]]
-                else:
-                    print("\nThat is incorrect.")
-
+                office_access()
             # Check if player is attempting to enter dorm room - if so, prompt with riddle
             elif len(currentRoom.split(" ")) > 1 and currentRoom.split(" ")[1] == "CR" and rooms[currentRoom][move[1]].split(" ")[1] == "Dorm":
-                # For now, for simplicity, every room will have the same riddle, but in future can have random
-                # riddles or specific ones to each house
-                print("""
-In order to enter the house dorm, you must first answer this riddle. 
-Answer correctly and you may enter. 
-Answer incorrectly and face the consequences.
-                """)
-                print('''
-            I'm often very stern,
-            I wear my hair up in a bun,
-            I'm really very fair,
-            I find Quidditch very fun.
-            Who am I?
-                
-Enter "A" for Albus Dumbledore - 
-"B" for Harry Potter - 
-"C" for Hermione Granger - 
-"D" for Minerva McGonagall
-                ''')
-
-                print('---------------------------')
-                answer = input(">").strip().upper()
-
-                # If answered correctly, they continue to the respective Dorm
-                if answer == "D":
-                    currentRoom = rooms[currentRoom][move[1]]
-                # Otherwise they are taken to Headmaster's Office
-                else:
-                    print("""
-You have been caught by Professor Minerva McGonagall for trying to sneak into another houses dorm!
-She takes you directly to the Headmaster's Office!
-                    """)
-                currentRoom = "Headmaster\'s Office"
+                dorm_access()
             else:
                 # set the current room to the new room
                 currentRoom = rooms[currentRoom][move[1]]
@@ -180,5 +214,8 @@ She takes you directly to the Headmaster's Office!
         else:
             # tell them they can't get it
             print('Can\'t get ' + move[1] + '!')
+
+
+
 
 
