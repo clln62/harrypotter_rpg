@@ -177,7 +177,7 @@ rooms = {
         'south': 'Herbology Grounds'
     },
     'Training Grounds': {
-        'west': 'Herbology Grounds'
+        'monster': 'dementors'
     },
     'Garden Path': {
         'north': 'Greenhouse 2',
