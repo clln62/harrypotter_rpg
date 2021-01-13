@@ -8,7 +8,7 @@ class Player:
 
 def new_player(inventory):
     print("What is your wizard name?")
-    name = input(">").strip().upper()
+    name = input(">").strip().capitalize()
     wizard = Player(name, inventory)
     return wizard
 
