@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/collin/PycharmProjects/hogwarts/venv"
+VIRTUAL_ENV="/Users/collin/PycharmProjects/rpg/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
