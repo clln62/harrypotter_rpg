@@ -2,13 +2,13 @@
 
 from monsters import dragon, basilisk
 from rooms import hogwarts_rooms
+from player import player_class
+from intro_story import story
 
 
 # an inventory, which is initially empty
 inventory = []
 
-# player health set to 100 at start
-health = 100
 
 # all monsters must be defeated to win. This is a tracker of the live monsters, once the list is empty, the player wins.
 monsters = ['dragon', 'basilisk']
@@ -19,25 +19,34 @@ rooms = hogwarts_rooms.rooms
 # start the player in the Main Hall
 currentRoom = 'Main Hall'
 
+# Create a new player - prompts player to enter name
+player = player_class.new_player(inventory)
 
 def showInstructions():
     # print a main menu and the commands
-    print('''
-Hogwarts RPG Game
+    print(f'''
 ========
 Commands:
   go [direction]
   get [item]
   q <quit game>
-''')
+  i <show instructions>
+    ''')
+
+def game_kickoff():
+    print(f"Welcome to Hogwarts {player.name}! We are excited to have you!")
+    # Kick off story to player
+    story.print_story()
+    showInstructions()
 
 
 def showStatus():
+    inventory = player.inventory
     # print the player's current status
     print('---------------------------')
     print('You are in the ' + currentRoom)
     # print current health
-    print('Health : ' + str(health))
+    print('Health : ' + str(player.health))
     # print the current inventory
     print('Inventory : ' + str(inventory))
     # print an item if there is one
@@ -88,7 +97,7 @@ def restricted_access():
     global currentRoom
     if 'key' in inventory:
         currentRoom = rooms[currentRoom][move[1]]
-        inventory.remove('key')
+        player.inventory.remove('key')
         print('You reach for the key as you enter, but the key has vanished.')
     else:
         print('Access to the Restricted Section is reserved to those with permission from the Headmaster.')
@@ -155,8 +164,9 @@ She takes you directly to the Headmaster's Office!
 
 
 
+
 # Kick of game, followed by while loop
-showInstructions()
+# showInstructions()
 
 # loop forever
 while True:
@@ -178,6 +188,8 @@ while True:
     # Allow player to quit
     if move[0] == 'q':
         break
+    elif move[0] == 'i':
+        showInstructions()
 
     # if they type 'go' first
     if move[0] == 'go':
@@ -205,7 +217,7 @@ while True:
         # if the room contains an item, and the item is the one they want to get
         if "item" in rooms[currentRoom] and move[1] in rooms[currentRoom]['item']:
             # add the item to their inventory
-            inventory += [move[1]]
+            player.inventory += [move[1]]
             # display a helpful message
             print(move[1] + ' got!')
             # delete the item from the room
