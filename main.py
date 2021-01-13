@@ -35,7 +35,7 @@ Commands:
     ''')
 
 def game_kickoff():
-    print(f"\nWelcome to Hogwarts {player.name}! We are excited to have you!")
+    print(f"\nMake haste {player.name}! Hogwarts is in dire need of your help!")
     # Kick off story to player
     story.print_story()
     input("Press enter to continue!")
