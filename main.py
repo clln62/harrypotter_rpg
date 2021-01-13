@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from monsters import dragon, basilisk
+from monsters import dragon, basilisk, dementors
 from rooms import hogwarts_rooms
 from player import player_class
 from intro_story import story
@@ -11,7 +11,7 @@ inventory = []
 
 
 # all monsters must be defeated to win. This is a tracker of the live monsters, once the list is empty, the player wins.
-monsters = ['dragon', 'basilisk']
+monsters = ['dragon', 'basilisk', 'dementors']
 
 # Large dictionary with all of the connected rooms imported
 rooms = hogwarts_rooms.rooms
@@ -72,8 +72,12 @@ def showStatus():
 
 # Kick off monster storyline scenarios
 def handle_monster():
+    inventory = player.inventory
     monster = rooms[currentRoom]["monster"]
-    print(f"\nYou have come face to face with a {monster}!")
+
+    if monster != 'dementors':
+        print(f"\nYou have come face to face with a {monster}!")
+
     if monster == 'dragon':
         # Will return true or false if monster was defeated. If not, the game was lost
         if dragon.dragon_encountered(inventory):
@@ -86,6 +90,13 @@ def handle_monster():
         if basilisk.basilisk_encountered(inventory):
             monster_defeated('basilisk')
             rooms[currentRoom]['west'] = 'Slytherin CR'
+        else:
+            return
+    elif monster == 'dementors':
+        # Will return true or false if monster was defeated. If not, the game was lost
+        if dementors.dementors_encountered(inventory):
+            monster_defeated('dementors')
+            rooms[currentRoom]['west'] = 'Herbology Grounds'
         else:
             return
 
