@@ -22,6 +22,9 @@ currentRoom = 'Main Hall'
 # Create a new player - prompts player to enter name
 player = player_class.new_player(inventory)
 
+# Check to see if player lost to monster
+monster_won = False
+
 def showInstructions():
     # print a main menu and the commands
     print(f'''
@@ -61,6 +64,9 @@ def showStatus():
         # if room contains a monster
     if "monster" in rooms[currentRoom]:
         handle_monster()
+        # If the monster won, break out of function
+        if monster_won:
+            return
     # print all directions and rooms
     print("\nCurrent paths:")
     for path in rooms[currentRoom]:
@@ -72,6 +78,7 @@ def showStatus():
 
 # Kick off monster storyline scenarios
 def handle_monster():
+    global monster_won
     inventory = player.inventory
     monster = rooms[currentRoom]["monster"]
 
@@ -80,25 +87,25 @@ def handle_monster():
 
     if monster == 'dragon':
         # Will return true or false if monster was defeated. If not, the game was lost
-        if dragon.dragon_encountered(inventory):
+        if dragon.dragon_encountered(inventory, player):
             monster_defeated('dragon')
             rooms[currentRoom]['narrow-path'] = 'Charms Class'
         else:
-            return
+            monster_won = True
     elif monster == 'basilisk':
         # Will return true or false if monster was defeated. If not, the game was lost
-        if basilisk.basilisk_encountered(inventory):
+        if basilisk.basilisk_encountered(inventory, player):
             monster_defeated('basilisk')
             rooms[currentRoom]['west'] = 'Slytherin CR'
         else:
-            return
+            monster_won = True
     elif monster == 'dementors':
         # Will return true or false if monster was defeated. If not, the game was lost
-        if dementors.dementors_encountered(inventory):
+        if dementors.dementors_encountered(inventory, player):
             monster_defeated('dementors')
             rooms[currentRoom]['west'] = 'Herbology Grounds'
         else:
-            return
+            monster_won = True
 
 
 # Monster has been defeated, remove from monsters list and remove from room
@@ -185,6 +192,16 @@ game_kickoff()
 
 # loop forever
 while True:
+
+    if player.health <= 0:
+        print(f"""
+Your health has declined to {player.health}, which means your heart is no longer beating.
+
+GAME OVER
+        """)
+        break
+    elif monster_won:
+        break
 
     showStatus()
 
