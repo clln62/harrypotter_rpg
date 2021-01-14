@@ -127,6 +127,5 @@ You must act quickly if you wish to survive!
 With no defenses, you trimmer in fear, only to be engulfed by the flames of the dragon.
 \nGAME OVER
         """)
-        return
     return defeated
 
