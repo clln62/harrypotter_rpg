@@ -23,10 +23,9 @@ You must act quickly if you wish to survive!
     else:
         print("""
         With no defenses, you trimmer in fear, only to be engulfed by the flames of the dragon.
-        \nGAME OVER
+        
+        GAME OVER
                 """)
-        return
-
     return defeated
 
 
