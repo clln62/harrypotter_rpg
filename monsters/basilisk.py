@@ -10,6 +10,18 @@ def scenario1():
 
     """)
 
+
+def scenario2():
+    print("""
+
+    """)
+
+
+def scenario3():
+    print("""
+
+    """)
+
 def basilisk_encountered(inventory):
     print("""
 You quickly reach for the door behind you, but the door has vanished, leaving no exit.
@@ -18,11 +30,15 @@ You slide under a desk, barely avoiding the deadly bite of the serpent.
 You must act quickly if you wish to survive!
     """)
 
-    if 'wand' in inventory:
+    if 'wand' in inventory and 'sword' in inventory:
         scenario1()
+    elif 'wand' in inventory:
+        scenario2()
+    elif 'sword' in inventory:
+        scenario3()
     else:
         print("""
-        With no defenses, you trimmer in fear, only to be engulfed by the flames of the dragon.
+        With no defenses, you trimmer in fear, only to be eaten whole by the basilisk.
         
         GAME OVER
                 """)
