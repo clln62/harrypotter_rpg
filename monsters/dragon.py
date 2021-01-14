@@ -33,7 +33,7 @@ Beyond the tail of the dragon, you can now see the exit.
             """)
             dragon_defeated()
         else:
-            scenario2()
+            scenario2(player)
     # Any other spell will fail, causing more effort to win against the dragon
     # This scenario is not yet completed
     else:
@@ -41,7 +41,7 @@ Beyond the tail of the dragon, you can now see the exit.
 
 
 # This gets called if player does not have the broom
-def scenario2():
+def scenario2(player):
     print("""
 Three spells come to your mind:
 Enter "A" for Defodio to dig and carve through the dragon.
@@ -61,8 +61,8 @@ With spared time, you brandish your sword, jabbing it into the side of the drago
 It swats you away, causing you to take on 25 points of damage when you hit a wall.
 Luckily for you, the sword was enough to cause the dragon to bleed out, giving you access to an exit.
         """)
+        player.health -= 25
         dragon_defeated()
-        # health -= 25
     # Other spells fail and the player loses
     else:
         print("""
@@ -106,7 +106,7 @@ The dragon opens its mouth, swiftly wrapping it around your head.
 
 
 # This function will be called from main once player comes across the dragon
-def dragon_encountered(inventory):
+def dragon_encountered(inventory, player):
     print("""
 The magnificent dragon flaps its wings and blows fire in your direction.
 You narrowly jump out of the way of the burning flames.
@@ -114,7 +114,7 @@ You must act quickly if you wish to survive!
                 """)
     # Player can only win with both sword and wand
     if 'wand' in inventory and 'sword' in inventory:
-        scenario1(inventory)
+        scenario1(inventory, player)
     # without a sword, the wizard has no means to win
     elif 'wand' in inventory:
         fail_no_sword()
