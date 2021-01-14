@@ -4,6 +4,7 @@ from monsters import dragon, basilisk, dementors
 from rooms import hogwarts_rooms
 from player import player_class
 from intro_story import story
+from riddles_passwords import riddles_passwords
 
 
 # an inventory, which is initially empty
@@ -137,62 +138,47 @@ def restricted_access():
 # Allow or deny access to Headmaster's Office
 def office_access():
     global currentRoom
-    print("""
-What's the password?
-Enter "A" for Quidditch
-"B" for Sherbet Lemon
-"C" for Hocus Pocus
-"D" for Gillyweed
-    """)
 
-    print('---------------------------')
-    answer = input(">").strip().upper()
-
-    if answer == "B":
+    if riddles_passwords.headmasters_office():
         # Only add key if this is the first entry and player does not already hold key
         # Player will also have access to key if needed after using it in the restricted section
         if 'key' not in inventory and 'item' not in rooms['Headmaster\'s Office']:
             rooms['Headmaster\'s Office']['item'] = 'key'
         currentRoom = rooms[currentRoom][move[1]]
-    else:
-        print("\nThat is incorrect.")
+
 
 # Allow or deny access to dorm room
 def dorm_access():
     global currentRoom
-    # For now, for simplicity, every room will have the same riddle, but in future can have random
-    # riddles or specific ones to each house
-    print("""
-In order to enter the house dorm, you must first answer this riddle. 
-Answer correctly and you may enter. 
-Answer incorrectly and face the consequences.
-    """)
-    print('''
-            I'm often very stern,
-            I wear my hair up in a bun,
-            I'm really very fair,
-            I find Quidditch very fun.
-            Who am I?
 
-Enter "A" for Albus Dumbledore - 
-"B" for Harry Potter - 
-"C" for Hermione Granger - 
-"D" for Minerva McGonagall
-    ''')
-
-    print('---------------------------')
-    answer = input(">").strip().upper()
-
-    # If answered correctly, they continue to the respective Dorm
-    if answer == "D":
-        currentRoom = rooms[currentRoom][move[1]]
-    # Otherwise they are taken to Headmaster's Office
-    else:
-        print("""
-You have been caught by Professor Minerva McGonagall for trying to sneak into another houses dorm!
-She takes you directly to the Headmaster's Office!
-        """)
-        currentRoom = "Headmaster\'s Office"
+    if currentRoom.split(" ")[0] == "Gryffindor":
+        # If answered correctly, they continue to the respective Dorm
+        if riddles_passwords.gryffindor_dorm():
+            currentRoom = rooms[currentRoom][move[1]]
+        # Otherwise they are taken to Headmaster's Office
+        else:
+            currentRoom = "Headmaster\'s Office"
+    elif currentRoom.split(" ")[0] == "Ravenclaw":
+        # If answered correctly, they continue to the respective Dorm
+        if riddles_passwords.ravenclaw_dorm():
+            currentRoom = rooms[currentRoom][move[1]]
+        # Otherwise they are taken to Headmaster's Office
+        else:
+            currentRoom = "Headmaster\'s Office"
+    elif currentRoom.split(" ")[0] == "Slytherin":
+        # If answered correctly, they continue to the respective Dorm
+        if riddles_passwords.slytherin_dorm():
+            currentRoom = rooms[currentRoom][move[1]]
+        # Otherwise they are taken to Headmaster's Office
+        else:
+            currentRoom = "Headmaster\'s Office"
+    elif currentRoom.split(" ")[0] == "Hufflepuff":
+        # If answered correctly, they continue to the respective Dorm
+        if riddles_passwords.hufflepuff_dorm():
+            currentRoom = rooms[currentRoom][move[1]]
+        # Otherwise they are taken to Headmaster's Office
+        else:
+            currentRoom = "Headmaster\'s Office"
 
 
 
