@@ -22,8 +22,11 @@ currentRoom = 'Main Hall'
 # Create a new player - prompts player to enter name
 player = player_class.new_player(inventory)
 
-# Check to see if player lost to monster
+# Check to see if player lost to monster for showStatus()
 monster_won = False
+
+# Check to see if monster lost for showStatus()
+monster_lost = False
 
 def showInstructions():
     # print a main menu and the commands
@@ -47,6 +50,7 @@ def game_kickoff():
 
 
 def showStatus():
+    global monster_lost
     inventory = player.inventory
     # print the player's current status
     print('---------------------------')
@@ -67,13 +71,20 @@ def showStatus():
         # If the monster won, break out of function
         if monster_won:
             return
-    # print all directions and rooms
-    print("\nCurrent paths:")
-    for path in rooms[currentRoom]:
-        # ignore items, monsters, and hidden doors
-        if path != "item" and path != "monster" and path != "hidden-door":
-            print(f"{path}: {rooms[currentRoom][path]}")
-    print("---------------------------")
+        else:
+            monster_lost = True
+            showStatus()
+    if monster_lost:
+        monster_lost = False
+        return
+    else:
+        # print all directions and rooms
+        print("\nCurrent paths:")
+        for path in rooms[currentRoom]:
+            # ignore items, monsters, and hidden doors
+            if path != "item" and path != "monster" and path != "hidden-door":
+                print(f"{path}: {rooms[currentRoom][path]}")
+        print("---------------------------")
 
 
 # Kick off monster storyline scenarios
@@ -181,7 +192,7 @@ Enter "A" for Albus Dumbledore -
 You have been caught by Professor Minerva McGonagall for trying to sneak into another houses dorm!
 She takes you directly to the Headmaster's Office!
         """)
-    currentRoom = "Headmaster\'s Office"
+        currentRoom = "Headmaster\'s Office"
 
 
 
