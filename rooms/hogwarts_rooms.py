@@ -65,9 +65,9 @@ rooms = {
     "House Hallway": {
         "downstairs": "Slytherin CR",
         "north": "Ravenclaw Tower",
-        "east": "Moving Staircases",
+        "west": "Moving Staircases",
         "south": "Hufflepuff Hallway",
-        "west": "Gryffindor CR"
+        "east": "Gryffindor CR"
     },
     "Headmaster's Office": {
         "north": "Moving Staircases"
@@ -99,8 +99,11 @@ rooms = {
         "south": "Hufflepuff Dorm"
     },
     "Gryffindor CR": {
-        "east": "House Hallway",
-        "west": "Gryffindor Dorm"
+        "west": "House Hallway",
+        "east": "Gryffindor Dorm"
+    },
+    "Gryffindor Dorm": {
+        "west": "Gryffindor CR"
     },
     "Great Hall": {
         "south": "Entrance Hall"
