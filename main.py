@@ -8,7 +8,7 @@ from riddles_passwords import riddles_passwords
 
 
 # an inventory, which is initially empty
-inventory = ['sword', 'wand', 'broom']
+inventory = []
 
 
 # all monsters must be defeated to win. This is a tracker of the live monsters, once the list is empty, the player wins.
