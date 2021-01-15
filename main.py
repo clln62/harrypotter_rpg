@@ -3,7 +3,7 @@
 from monsters import dragon, basilisk, dementors
 from rooms import hogwarts_rooms
 from player import player_class
-from intro_story import story
+from prompts import story
 from riddles_passwords import riddles_passwords
 
 
@@ -198,6 +198,10 @@ GAME OVER
         """)
         break
     elif monster_won:
+        break
+
+    if len(monsters) == 0:
+        story.print_winner(player.name)
         break
 
     showStatus()
