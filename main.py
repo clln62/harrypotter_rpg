@@ -8,7 +8,7 @@ from riddles_passwords import riddles_passwords
 
 
 # an inventory, which is initially empty
-inventory = []
+inventory = ['sword', 'wand', 'broom']
 
 
 # all monsters must be defeated to win. This is a tracker of the live monsters, once the list is empty, the player wins.
@@ -179,8 +179,6 @@ def dorm_access():
         # Otherwise they are taken to Headmaster's Office
         else:
             currentRoom = "Headmaster\'s Office"
-
-
 
 
 # Kick of game, followed by while loop

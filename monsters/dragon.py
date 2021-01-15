@@ -7,7 +7,7 @@ def dragon_defeated():
 
 
 # If player has wand, sword and broom, this function gets called
-def scenario1(inventory):
+def scenario1(inventory, player):
     print("""
 With your wand at the ready, you must come up with a spell to distract the dragon!
 Enter "A" for Aqua Eructo to shoot a stream of water at the dragon.
