@@ -1,6 +1,8 @@
+from print_storyline import print_text
+
 # Password to gain access to Headmaster's Office
 def headmasters_office():
-    print("""
+    print_text.print_text("""
             What's the password?
             Enter "A" for Quidditch
             "B" for Sherbet Lemon
@@ -8,30 +10,28 @@ def headmasters_office():
             "D" for Gillyweed
         """)
 
-    print('---------------------------')
     answer = input(">").strip().upper()
 
     if answer == "B":
         return True
     else:
-        print("\nThat is incorrect.")
+        print_text.print_text("\nThat is incorrect.")
         return False
 
 def dorm_warning():
-    print("""
+    print_text.print_text("""
 In order to enter the house dorm, you must first answer this riddle. 
 Answer correctly and you may enter. 
 Answer incorrectly and face the consequences.
         """)
 
 def dorm_answer():
-    print('---------------------------')
     answer = input(">").strip().upper()
     return answer
 
 
 def dorm_caught(professor):
-    print(f"""
+    print_text.print_text(f"""
 You have been caught by Professor {professor} for trying to sneak into another houses dorm!
 They take you directly to the Headmaster's Office!
             """)
@@ -40,7 +40,7 @@ They take you directly to the Headmaster's Office!
 # To gain access to Gryffindor Dorm
 def gryffindor_dorm():
     dorm_warning()
-    print('''
+    print_text.print_text('''
                 I'm often very stern,
                 I wear my hair up in a bun,
                 I'm really very fair,
@@ -63,7 +63,7 @@ def gryffindor_dorm():
 # To gain access to Ravenclaw Dorm
 def ravenclaw_dorm():
     dorm_warning()
-    print('''
+    print_text.print_text('''
                 Which came first, the phoenix or the flame?
 
                 Enter "A" for phoenix. 
@@ -82,7 +82,7 @@ def ravenclaw_dorm():
 # To gain access to Slytherin Dorm
 def slytherin_dorm():
     dorm_warning()
-    print('''
+    print_text.print_text('''
                 According to a Malfoy, what is more important than anything else?
 
                 Enter "A" for magic. 
@@ -101,7 +101,7 @@ def slytherin_dorm():
 # To gain access to Hufflepuff Dorm
 def hufflepuff_dorm():
     dorm_warning()
-    print('''
+    print_text.print_text('''
                 There once was a kind woman that was known by all as Helga Hufflepuff.
                 
                 Here resides students inside her house.

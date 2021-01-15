@@ -1,6 +1,7 @@
+from print_storyline import print_text
 
 def print_story():
-    print(f"""
+    print_text.print_text(f"""
 You are a senior at the mysterious and mystical Hogwarts School of Witchcraft and Wizardry!
 With graduation around the corner and scoring at the top of your class, you cannot wait to share your abilities with the world.
 There seems to be something wrong with the school you have come to know over the past seven years.
@@ -13,7 +14,7 @@ Become the hero of this story, explore Hogwarts with the utmost haste, but don't
 
 
 def print_winner(name):
-    print(f"""
+    print_text.print_text(f"""
 Professor Albus Dumbledore rushes to your side with a special thank you!
 
 "Congratulations, {name}! You saved Hogwarts, and all of your classmates! It's time to celebrate with your graduation.

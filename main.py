@@ -5,6 +5,7 @@ from rooms import hogwarts_rooms
 from player import player_class
 from prompts import story
 from riddles_passwords import riddles_passwords
+from print_storyline import print_text
 
 
 # an inventory, which is initially empty
@@ -31,7 +32,7 @@ monster_lost = False
 
 def showInstructions():
     # print a main menu and the commands
-    print(f'''
+    print_text.print_text(f'''
 How to play:
 ============
 Commands:
@@ -95,7 +96,7 @@ def handle_monster():
     monster = rooms[currentRoom]["monster"]
 
     if monster != 'dementors':
-        print(f"\nYou have come face to face with a {monster}!")
+        print_text.print_text(f"You have come face to face with a {monster}!")
 
     if monster == 'dragon':
         # Will return true or false if monster was defeated. If not, the game was lost
@@ -131,9 +132,9 @@ def restricted_access():
     if 'key' in inventory:
         currentRoom = rooms[currentRoom][move[1]]
         player.inventory.remove('key')
-        print('You reach for the key as you enter, but the key has vanished.')
+        print_text.print_text('You reach for the key as you enter, but the key has vanished.')
     else:
-        print('Access to the Restricted Section is reserved to those with permission from the Headmaster.')
+        print_text.print_text('Access to the Restricted Section is reserved to those with permission from the Headmaster.')
 
 # Allow or deny access to Headmaster's Office
 def office_access():
@@ -189,7 +190,7 @@ game_kickoff()
 while True:
 
     if player.health <= 0:
-        print(f"""
+        print_text.print_text(f"""
 Your health has declined to {player.health}, which means your heart is no longer beating.
 
 GAME OVER
@@ -241,7 +242,7 @@ GAME OVER
 
         # there is no door (link) to the new room
         else:
-            print('You can\'t go that way!')
+            print_text.print_text('You can\'t go that way!')
 
     # if they type 'get' first
     if move[0] == 'get':
@@ -250,13 +251,13 @@ GAME OVER
             # add the item to their inventory
             player.inventory += [move[1]]
             # display a helpful message
-            print(move[1] + ' got!')
+            print_text.print_text('You have picked up the ' + move[1] + '.')
             # delete the item from the room
             del rooms[currentRoom]['item']
         # otherwise, if the item isn't there to get
         else:
             # tell them they can't get it
-            print('Can\'t get ' + move[1] + '!')
+            print_text.print_text('Can\'t get ' + move[1] + '!')
 
 
 
