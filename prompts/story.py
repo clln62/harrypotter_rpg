@@ -12,3 +12,8 @@ Become the hero of this story, explore Hogwarts with the utmost haste, but don't
     """)
 
 
+def print_winner(name):
+    print(f"""
+Congratulations, {name}! You saved Hogwarts, and all of your classmates! It's time to celebrate with your graduation.
+With your skills of taking down dragons, basilisks and dementors, you are bound to have a bright future in the wizarding world!
+    """)
