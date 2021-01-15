@@ -47,10 +47,10 @@ def gryffindor_dorm():
                 I find Quidditch very fun.
                 Who am I?
 
-    Enter "A" for Albus Dumbledore - 
-    "B" for Harry Potter - 
-    "C" for Hermione Granger - 
-    "D" for Minerva McGonagall
+                Enter "A" for Albus Dumbledore - 
+                "B" for Harry Potter - 
+                "C" for Hermione Granger - 
+                "D" for Minerva McGonagall
         ''')
 
     if dorm_answer() == 'D':
@@ -66,10 +66,10 @@ def ravenclaw_dorm():
     print('''
                 Which came first, the phoenix or the flame?
 
-    Enter "A" for phoenix. 
-    "B" for flame. 
-    "C" for weird question. 
-    "D" for a circle has no beginning.
+                Enter "A" for phoenix. 
+                "B" for flame. 
+                "C" for weird question. 
+                "D" for a circle has no beginning.
         ''')
 
     if dorm_answer() == 'D':
@@ -85,10 +85,10 @@ def slytherin_dorm():
     print('''
                 According to a Malfoy, what is more important than anything else?
 
-    Enter "A" for magic. 
-    "B" for pure-blood. 
-    "C" for Tom Riddle. 
-    "D" for Hogwarts.
+                Enter "A" for magic. 
+                "B" for pure-blood. 
+                "C" for Tom Riddle. 
+                "D" for Hogwarts.
         ''')
 
     if dorm_answer() == 'B':
@@ -107,10 +107,10 @@ def hufflepuff_dorm():
                 Here resides students inside her house.
                 Tap the barrels, ounce by ounce.
 
-    Enter "A" for [8, 5, 12, 7, 1, 8, 21, 6, 6, 12, 5, 16 21, 6, 6]
-    "B" for [1, 12. 2. 21. 19. 4. 21. 13. 2. 12. 4. 15.18. 5]
-    "C" for [23, 18, 15, 14, 7, 1, 14, 19, 23, 5, 18] 
-    "D" for [8, 5, 1, 4, 13, 1, 19, 20, 5, 18, 19, 15, 6, 6, 9, 3, 5]
+                Enter "A" for [8, 5, 12, 7, 1, 8, 21, 6, 6, 12, 5, 16 21, 6, 6]
+                "B" for [1, 12. 2. 21. 19. 4. 21. 13. 2. 12. 4. 15.18. 5]
+                "C" for [23, 18, 15, 14, 7, 1, 14, 19, 23, 5, 18] 
+                "D" for [8, 5, 1, 4, 13, 1, 19, 20, 5, 18, 19, 15, 6, 6, 9, 3, 5]
         ''')
 
     if dorm_answer() == 'A':
